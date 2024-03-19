@@ -1,42 +1,20 @@
 %{
 #include <stdio.h>
-int yylineno = 1; // Declare and initialize yylineno
 %}
 
-letter [a-zA-Z]
-digit [0-9]
-
 %%
 
-\n { yylineno++; } // Increment yylineno on encountering a newline
-
-#include<{letter}+(\.{letter}*)?> printf("%d\t%s\tPREPROCESSOR\n",yylineno,yytext);
-return|main|for|while|case|switch|if|else printf("%d\t%s\tKEYWORD\n",yylineno,yytext);
-int|float|char|struct printf("%d\t%s\tDATATYPE\n",yylineno,yytext);
-\( printf("%d\t%s\tBRACKET OPEN\n",yylineno,yytext);
-\) printf("%d\t%s\tBRACKET CLOSE\n",yylineno,yytext);
-{letter}({letter}|{digit})* printf("%d\t%s\tIDENTIFIER\n",yylineno,yytext);
-{digit}+ printf("%d\t%s\tINTEGER\n",yylineno,yytext);
-\{ printf("%d\t%s\tBRACE OPEN\n",yylineno,yytext);
-\} printf("%d\t%s\tBRACE CLOSE\n",yylineno,yytext);
-{digit}+"E"(\+|\-)?{digit}+ printf("%d\t%s\tREAL NUMBER\n",yylineno,yytext);
-{digit}+\.{digit}+(E(\+|\-)?{digit}+)? printf("%d\t%s\tFLOATING NUMBER\n",yylineno,yytext);
-= printf("%d\t%s\tASSIGNMENT\n",yylineno,yytext);
-; printf("%d\t%s\tTERMINATOR\n",yylineno,yytext);
-\t ;
-" " ;
-\"({letter}|{digit}|" ")*\" printf("%d\t%s\tSTRING CONSTANT\n",yylineno,yytext);
+int|float|char|double|short|long|unsigned|signed|void|auto|const|extern|static|register|volatile { printf("KEYWORD: %s\n", yytext); }
+[a-zA-Z][a-zA-Z0-9]* { printf("IDENTIFIER: %s\n", yytext); }
+[ \t]+               { printf("WHITESPACE: \"%s\"\n", yytext); } 
+\n                   { printf("NEWLINE\n"); }
+.                    { printf("CHARACTER: %c\n", yytext[0]); }
 
 %%
-
-int yywrap(){
+int yywrap() {
     return 1;
 }
-
-int main(int argc, char * argv[]){
-    yyin=fopen(argv[1],"r");
-    printf("LINE\tLEXME\tTOKEN\n");
+int main() {
     yylex();
-    fclose(yyin);
-    return 0;
+    return 0;
 }
