@@ -18,3 +18,24 @@ int main() {
     yylex();
     return 0;
 }
+
+
+/* PS D:\C> flex as.l
+PS D:\C> gcc lex.yy.c
+PS D:\C> .\a.exe
+ashish joshi int float if;
+IDENTIFIER: ashish
+WHITESPACE: " "
+IDENTIFIER: joshi
+WHITESPACE: " "
+KEYWORD: int
+WHITESPACE: " "
+KEYWORD: float
+WHITESPACE: " "
+IDENTIFIER: if
+CHARACTER: ;
+NEWLINE
+=
+CHARACTER: =
+NEWLINE
+ */
